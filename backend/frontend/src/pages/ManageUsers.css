@@ -1,0 +1,67 @@
+.manage-users {
+  margin-left: 270px;
+  padding: 30px;
+  min-height: 100vh;
+  background-color: #f4f6f9;
+}
+
+.manage-users h1 {
+  margin-bottom: 20px;
+  color: #222;
+}
+
+.search-box {
+  width: 350px;
+  padding: 10px 12px;
+  margin-bottom: 20px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 15px;
+  outline: none;
+}
+
+.search-box:focus {
+  border-color: #2563eb;
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+}
+
+.users-table th {
+  background-color: #1f2937;
+  color: white;
+  padding: 14px;
+  text-align: left;
+}
+
+.users-table td {
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.users-table tr:hover {
+  background-color: #f9fafb;
+}
+
+.delete-btn {
+  background-color: #dc2626;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background-color: #b91c1c;
+}
+
+.no-users {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}

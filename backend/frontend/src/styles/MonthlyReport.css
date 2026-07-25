@@ -1,0 +1,48 @@
+.report-page {
+  padding: 30px;
+  background: #f4f6f9;
+  min-height: 100vh;
+}
+
+.report-page h1 {
+  margin-bottom: 30px;
+}
+
+.loading {
+  text-align: center;
+  margin-top: 100px;
+}
+
+.report-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.report-card {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.report-card h3 {
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.report-card h2 {
+  font-size: 28px;
+}
+
+.income {
+  border-left: 6px solid #22c55e;
+}
+
+.expense {
+  border-left: 6px solid #ef4444;
+}
+
+.savings {
+  border-left: 6px solid #3b82f6;
+}

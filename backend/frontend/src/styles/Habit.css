@@ -1,0 +1,165 @@
+.habit-page {
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.habit-page h1 {
+  text-align: center;
+  color: #1f2937;
+  margin-bottom: 30px;
+}
+
+.habit-card {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  margin-bottom: 35px;
+}
+
+.habit-card h2 {
+  color: #2563eb;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.habit-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.habit-card input,
+.habit-card select {
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.habit-card input:focus,
+.habit-card select:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+.habit-card button {
+  background: #2563eb;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 16px;
+}
+
+.habit-card button:hover {
+  background: #1d4ed8;
+}
+
+.habit-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 25px;
+}
+
+.habit-item {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s;
+}
+
+.habit-item:hover {
+  transform: translateY(-5px);
+}
+
+.habit-item h3 {
+  color: #2563eb;
+  margin-bottom: 12px;
+}
+
+.habit-item p {
+  margin: 10px 0;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 18px;
+  background: #e5e7eb;
+  border-radius: 30px;
+  overflow: hidden;
+  margin: 15px 0;
+}
+
+.progress {
+  height: 100%;
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+  transition: width 0.4s;
+}
+
+.habit-badge {
+  display: inline-block;
+  background: #f59e0b;
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  margin-bottom: 15px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.complete-btn,
+.reset-btn,
+.delete-btn {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 15px;
+}
+
+.complete-btn {
+  background: #22c55e;
+  color: white;
+}
+
+.complete-btn:hover {
+  background: #16a34a;
+}
+
+.reset-btn {
+  background: #f59e0b;
+  color: white;
+}
+
+.reset-btn:hover {
+  background: #d97706;
+}
+
+.delete-btn {
+  background: #ef4444;
+  color: white;
+}
+
+.delete-btn:hover {
+  background: #dc2626;
+}
+
+@media (max-width: 768px) {
+  .habit-page {
+    padding: 15px;
+  }
+
+  .habit-card,
+  .habit-item {
+    padding: 18px;
+  }
+}

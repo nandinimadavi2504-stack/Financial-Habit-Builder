@@ -1,0 +1,78 @@
+.profile-page {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.profile-card {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  padding: 35px;
+}
+
+.profile-card h1 {
+  text-align: center;
+  color: #2563eb;
+  margin-bottom: 30px;
+}
+
+.profile-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.profile-card input,
+.profile-card select,
+.profile-card textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 15px;
+  outline: none;
+  transition: 0.3s;
+  box-sizing: border-box;
+}
+
+.profile-card input:focus,
+.profile-card select:focus,
+.profile-card textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 5px rgba(37, 99, 235, 0.2);
+}
+
+.profile-card textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.profile-card button {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.profile-card button:hover {
+  background: #1d4ed8;
+}
+
+@media (max-width: 768px) {
+  .profile-page {
+    padding: 15px;
+  }
+
+  .profile-card {
+    padding: 20px;
+  }
+
+  .profile-card h1 {
+    font-size: 24px;
+  }
+}

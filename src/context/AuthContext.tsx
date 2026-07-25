@@ -1,8 +1,15 @@
-import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from 'react';
-import { Session, User } from '@supabase/supabase-js';
-import { supabase } from '../lib/supabase';
-import { seedSampleData } from '../lib/seedData';
-import { Profile } from '../types';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+  useCallback,
+} from "react";
+import { Session, User } from "@supabase/supabase-js";
+import { supabase } from "../lib/supabase";
+import { seedSampleData } from "../lib/seedData";
+import { Profile } from "../types";
 
 interface AuthContextValue {
   user: User | null;
@@ -10,8 +17,15 @@ interface AuthContextValue {
   session: Session | null;
   loading: boolean;
   isAdmin: boolean;
-  signUp: (email: string, password: string, meta: Record<string, string>) => Promise<{ error: string | null }>;
-  signIn: (email: string, password: string) => Promise<{ error: string | null }>;
+  signUp: (
+    email: string,
+    password: string,
+    meta: Record<string, string>,
+  ) => Promise<{ error: string | null }>;
+  signIn: (
+    email: string,
+    password: string,
+  ) => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
 }
@@ -25,12 +39,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const loadProfile = useCallback(async (userId: string) => {
     const { data, error } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', userId)
+      .from("profiles")
+      .select("*")
+      .eq("id", userId)
       .maybeSingle();
     if (error) {
-      console.error('Profile load error:', error.message);
+      console.error("Profile load error:", error.message);
       return;
     }
     setProfile(data as Profile | null);
@@ -43,31 +57,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (!mounted) return;
       setSession(data.session);
       if (data.session?.user) {
-        loadProfile(data.session.user.id).finally(() => mounted && setLoading(false));
+        loadProfile(data.session.user.id).finally(
+          () => mounted && setLoading(false),
+        );
       } else {
         setLoading(false);
       }
     });
 
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, newSession) => {
-      setSession(newSession);
-      if (newSession?.user) {
-        // Profile may not exist immediately after signup trigger fires;
-        // retry once after a short delay if the first load returns null.
-        (async () => {
-          await loadProfile(newSession.user.id);
-          setProfile((p) => {
-            if (!p) {
-              setTimeout(() => loadProfile(newSession.user.id), 600);
-            }
-            return p;
-          });
-        })();
-      } else {
-        setProfile(null);
-      }
-      setLoading(false);
-    });
+    const { data: sub } = supabase.auth.onAuthStateChange(
+      (_event, newSession) => {
+        setSession(newSession);
+        if (newSession?.user) {
+          // Profile may not exist immediately after signup trigger fires;
+          // retry once after a short delay if the first load returns null.
+          (async () => {
+            await loadProfile(newSession.user.id);
+            setProfile((p) => {
+              if (!p) {
+                setTimeout(() => loadProfile(newSession.user.id), 600);
+              }
+              return p;
+            });
+          })();
+        } else {
+          setProfile(null);
+        }
+        setLoading(false);
+      },
+    );
 
     return () => {
       mounted = false;
@@ -75,7 +93,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, [loadProfile]);
 
-  const signUp = async (email: string, password: string, meta: Record<string, string>) => {
+  const signUp = async (
+    email: string,
+    password: string,
+    meta: Record<string, string>,
+  ) => {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -84,14 +106,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (error) return { error: error.message };
     if (data.user) {
       // Seed realistic sample data so the app is populated on first login.
-      seedSampleData(data.user.id).catch((e) => console.error('seed failed:', e));
+      seedSampleData(data.user.id).catch((e) =>
+        console.error("seed failed:", e),
+      );
       setTimeout(() => loadProfile(data.user!.id), 500);
     }
     return { error: null };
   };
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
     if (error) return { error: error.message };
     return { error: null };
   };
@@ -127,6 +154,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 export function useAuth() {
   const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error('useAuth must be used within AuthProvider');
+  if (!ctx) throw new Error("useAuth must be used within AuthProvider");
   return ctx;
 }

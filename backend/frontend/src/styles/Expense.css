@@ -1,0 +1,126 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background: #f4f7fc;
+}
+
+.expense-page {
+  padding: 30px;
+}
+
+.expense-page h1 {
+  color: #dc2626;
+  margin-bottom: 25px;
+}
+
+.expense-card {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+  margin-bottom: 30px;
+}
+
+.expense-card h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #1e293b;
+}
+
+.expense-card form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.expense-card input {
+  flex: 1;
+  min-width: 220px;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.expense-card input:focus {
+  outline: none;
+  border-color: #dc2626;
+}
+
+.expense-card button {
+  background: #dc2626;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+.expense-card button:hover {
+  background: #b91c1c;
+}
+
+.expense-list {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+}
+
+.expense-list h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #1e293b;
+}
+
+.expense-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.expense-list th {
+  background: #dc2626;
+  color: white;
+  padding: 14px;
+  text-align: left;
+}
+
+.expense-list td {
+  padding: 14px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.expense-list tr:hover {
+  background: #f8fafc;
+}
+
+.delete-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.delete-btn:hover {
+  background: #dc2626;
+}
+
+@media (max-width: 768px) {
+  .expense-card form {
+    flex-direction: column;
+  }
+
+  .expense-card input,
+  .expense-card button {
+    width: 100%;
+  }
+
+  .expense-list {
+    overflow-x: auto;
+  }
+}

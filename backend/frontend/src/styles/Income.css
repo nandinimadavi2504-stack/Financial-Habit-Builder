@@ -1,0 +1,112 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background: #f4f7fc;
+}
+
+.income-page {
+  padding: 30px;
+}
+
+.income-page h1 {
+  color: #2563eb;
+  margin-bottom: 25px;
+}
+
+.income-card {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+  margin-bottom: 30px;
+}
+
+.income-card h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #1e293b;
+}
+
+.income-card form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.income-card input {
+  flex: 1;
+  min-width: 220px;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.income-card input:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+.income-card button {
+  background: #16a34a;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+.income-card button:hover {
+  background: #15803d;
+}
+
+.income-list {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+}
+
+.income-list h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #1e293b;
+}
+
+.income-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.income-list th {
+  background: #2563eb;
+  color: white;
+  padding: 14px;
+  text-align: left;
+}
+
+.income-list td {
+  padding: 14px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.income-list tr:hover {
+  background: #f8fafc;
+}
+
+@media (max-width: 768px) {
+  .income-card form {
+    flex-direction: column;
+  }
+
+  .income-card input,
+  .income-card button {
+    width: 100%;
+  }
+
+  .income-list {
+    overflow-x: auto;
+  }
+}

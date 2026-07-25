@@ -1,0 +1,58 @@
+.admin-feedback-container {
+  display: flex;
+  min-height: 100vh;
+  background: #f4f6f9;
+}
+
+.admin-feedback-content {
+  flex: 1;
+  padding: 30px;
+}
+
+.admin-feedback-content h1 {
+  margin-bottom: 20px;
+}
+
+.search-box {
+  width: 350px;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.feedback-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+.feedback-table th,
+.feedback-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.feedback-table th {
+  background: #2563eb;
+  color: white;
+}
+
+.feedback-table tr:nth-child(even) {
+  background: #f8f8f8;
+}
+
+.delete-btn {
+  background: #dc2626;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.delete-btn:hover {
+  background: #b91c1c;
+}

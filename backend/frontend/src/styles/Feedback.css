@@ -1,0 +1,46 @@
+.feedback-page {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+
+.feedback-card {
+  width: 600px;
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.feedback-card h2 {
+  margin-bottom: 20px;
+}
+
+.feedback-card input,
+.feedback-card textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+.feedback-card textarea {
+  resize: vertical;
+}
+
+.feedback-card button {
+  width: 100%;
+  padding: 12px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.feedback-card button:hover {
+  background: #1d4ed8;
+}
