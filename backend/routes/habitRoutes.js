@@ -6,24 +6,31 @@ const authMiddleware = require("../middleware/authMiddleware");
 const {
   createHabit,
   getHabits,
+  getHabitById,
+  updateHabit,
   completeHabit,
   resetHabit,
   deleteHabit,
 } = require("../controllers/habitController");
 
-// Create Habit
-router.post("/", authMiddleware, createHabit);
+// Protect all routes
+router.use(authMiddleware);
 
-// Get All Habits
-router.get("/", authMiddleware, getHabits);
+// ======================================
+// Collection Routes
+// ======================================
+router.route("/").get(getHabits).post(createHabit);
 
-// Mark Habit as Completed
-router.put("/complete/:id", authMiddleware, completeHabit);
+// ======================================
+// Single Habit Routes
+// ======================================
+router.route("/:id").get(getHabitById).put(updateHabit).delete(deleteHabit);
 
-// Reset Habit
-router.put("/reset/:id", authMiddleware, resetHabit);
+// ======================================
+// Habit Actions
+// ======================================
+router.patch("/:id/complete", completeHabit);
 
-// Delete Habit
-router.delete("/:id", authMiddleware, deleteHabit);
+router.patch("/:id/reset", resetHabit);
 
 module.exports = router;

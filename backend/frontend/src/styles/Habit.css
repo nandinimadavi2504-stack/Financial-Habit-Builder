@@ -163,3 +163,244 @@
     padding: 18px;
   }
 }
+/* ======================================
+   Header
+====================================== */
+
+.habit-header {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.habit-header p {
+  color: #6b7280;
+  margin-top: 8px;
+}
+
+/* ======================================
+   Summary Cards
+====================================== */
+
+.habit-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.summary-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.summary-card h3 {
+  color: #6b7280;
+  margin-bottom: 10px;
+}
+
+.summary-card h2 {
+  color: #2563eb;
+  font-size: 30px;
+}
+
+/* ======================================
+   Form
+====================================== */
+
+.habit-form-card {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.habit-form {
+  display: grid;
+  gap: 15px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.checkbox-group {
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+/* ======================================
+   Toolbar
+====================================== */
+
+.habit-toolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin: 30px 0;
+  flex-wrap: wrap;
+}
+
+.habit-toolbar input,
+.habit-toolbar select {
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  min-width: 220px;
+}
+
+/* ======================================
+   Table
+====================================== */
+
+.habit-table-container {
+  overflow-x: auto;
+}
+
+.habit-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.habit-table th {
+  background: #2563eb;
+  color: white;
+}
+
+.habit-table th,
+.habit-table td {
+  padding: 15px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+/* ======================================
+   Status
+====================================== */
+
+.status.completed {
+  color: #16a34a;
+  font-weight: bold;
+}
+
+.status.pending {
+  color: #dc2626;
+  font-weight: bold;
+}
+
+.badge {
+  margin-left: 8px;
+  font-size: 18px;
+}
+
+/* ======================================
+   Actions
+====================================== */
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.edit-btn {
+  background: #3b82f6;
+  color: white;
+}
+
+.edit-btn:hover {
+  background: #2563eb;
+}
+
+/* ======================================
+   Chart
+====================================== */
+
+.habit-chart {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.habit-chart h2 {
+  margin-bottom: 20px;
+  color: #2563eb;
+}
+
+/* ======================================
+   Loading / Empty / Error
+====================================== */
+
+.loading,
+.error-box,
+.empty-state {
+  text-align: center;
+  background: white;
+  padding: 50px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.primary-btn {
+  margin-top: 15px;
+  background: #2563eb;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.primary-btn:hover {
+  background: #1d4ed8;
+}
+
+/* ======================================
+   Responsive
+====================================== */
+
+@media (max-width: 768px) {
+  .habit-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .habit-toolbar {
+    flex-direction: column;
+  }
+
+  .habit-toolbar input,
+  .habit-toolbar select {
+    width: 100%;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .form-buttons {
+    flex-direction: column;
+  }
+}

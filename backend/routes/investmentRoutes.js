@@ -1,25 +1,27 @@
 const express = require("express");
 const router = express.Router();
 
+const authMiddleware = require("../middleware/authMiddleware");
+
 const {
   addInvestment,
   getInvestments,
+  getInvestmentById,
   updateInvestment,
   deleteInvestment,
 } = require("../controllers/investmentController");
 
-const authMiddleware = require("../middleware/authMiddleware");
+// Protect all investment routes
+router.use(authMiddleware);
 
-// Add Investment
-router.post("/", authMiddleware, addInvestment);
+// Collection Routes
+router.route("/").get(getInvestments).post(addInvestment);
 
-// Get All Investments
-router.get("/", authMiddleware, getInvestments);
-
-// Update Investment
-router.put("/:id", authMiddleware, updateInvestment);
-
-// Delete Investment
-router.delete("/:id", authMiddleware, deleteInvestment);
+// Single Investment Routes
+router
+  .route("/:id")
+  .get(getInvestmentById)
+  .put(updateInvestment)
+  .delete(deleteInvestment);
 
 module.exports = router;

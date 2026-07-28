@@ -12,7 +12,7 @@ import IncomeExpenseChart from "../components/IncomeExpenseChart";
 import ExpensePieChart from "../components/ExpensePieChart";
 import InvestmentChart from "../components/InvestmentChart";
 import RecentTransactions from "../components/RecentTransactions";
-import GoalProgress from "../components/GoalProgress";
+import GoalProgress from "../components/GoalProgressBar";
 import HabitProgress from "../components/HabitProgress";
 
 import "../styles/Dashboard.css";
@@ -31,6 +31,8 @@ function Dashboard() {
   const [totalIncome, setTotalIncome] = useState(0);
   const [totalExpense, setTotalExpense] = useState(0);
   const [totalInvestment, setTotalInvestment] = useState(0);
+
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     loadDashboard();
@@ -77,6 +79,8 @@ function Dashboard() {
       setTotalInvestment(investmentTotal);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -86,13 +90,34 @@ function Dashboard() {
     navigate("/login");
   };
 
+  if (loading) {
+    return <h2 className="loading">Loading Dashboard...</h2>;
+  }
+
   const currentBalance = totalIncome - totalExpense;
+
+  const financialHealth =
+    totalIncome === 0 ? 0 : Math.round((currentBalance / totalIncome) * 100);
   return (
     <div className="dashboard">
       <div className="dashboard-header">
         <div>
           <h1>Financial Habit Builder & Wealth Growth Tracker</h1>
-          <h3>Welcome, {user?.fullName || "User"} 👋</h3>
+
+          <h2>Welcome back, {user?.fullName || "User"} 👋</h2>
+
+          <p className="dashboard-subtitle">
+            Track your finances, build healthy habits and grow your wealth.
+          </p>
+
+          <p className="dashboard-date">
+            {new Date().toLocaleDateString("en-IN", {
+              weekday: "long",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </p>
         </div>
 
         <button className="logout-btn" onClick={handleLogout}>
@@ -100,6 +125,7 @@ function Dashboard() {
         </button>
       </div>
 
+      {/* Dashboard Cards */}
       <DashboardCards
         totalIncome={totalIncome}
         totalExpense={totalExpense}
@@ -107,6 +133,24 @@ function Dashboard() {
         totalInvestments={totalInvestment}
       />
 
+      {/* Financial Health */}
+      <div className="health-card">
+        <h2>Financial Health Score</h2>
+
+        <h1>{financialHealth}%</h1>
+
+        <p>
+          {financialHealth >= 80
+            ? "Excellent"
+            : financialHealth >= 60
+              ? "Good"
+              : financialHealth >= 40
+                ? "Average"
+                : "Needs Improvement"}
+        </p>
+      </div>
+
+      {/* Charts */}
       <div className="chart-section">
         <IncomeExpenseChart income={totalIncome} expense={totalExpense} />
       </div>
@@ -117,14 +161,17 @@ function Dashboard() {
         <InvestmentChart investments={investments} />
       </div>
 
+      {/* Progress */}
       <div className="progress-grid">
         <GoalProgress goals={goals} />
 
         <HabitProgress habits={habits} />
       </div>
 
+      {/* Recent Transactions */}
       <RecentTransactions incomes={income} expenses={expenses} />
 
+      {/* Quick Actions */}
       <div className="actions">
         <button className="action-btn" onClick={() => navigate("/income")}>
           Add Income
@@ -157,8 +204,17 @@ function Dashboard() {
         <button className="action-btn" onClick={() => navigate("/profile")}>
           Profile
         </button>
+
+        <button className="action-btn" onClick={() => navigate("/report")}>
+          Monthly Report
+        </button>
+
+        <button className="action-btn" onClick={() => navigate("/feedback")}>
+          Feedback
+        </button>
       </div>
 
+      {/* Financial Summary */}
       <div className="transactions">
         <h2>Financial Summary</h2>
 
@@ -173,22 +229,27 @@ function Dashboard() {
           <tbody>
             <tr>
               <td>Total Income</td>
-              <td>{totalIncome.toLocaleString()}</td>
+              <td>₹{totalIncome.toLocaleString()}</td>
             </tr>
 
             <tr>
               <td>Total Expense</td>
-              <td>{totalExpense.toLocaleString()}</td>
+              <td>₹{totalExpense.toLocaleString()}</td>
             </tr>
 
             <tr>
               <td>Current Balance</td>
-              <td>{currentBalance.toLocaleString()}</td>
+              <td>₹{currentBalance.toLocaleString()}</td>
             </tr>
 
             <tr>
               <td>Total Investments</td>
-              <td>{totalInvestment.toLocaleString()}</td>
+              <td>₹{totalInvestment.toLocaleString()}</td>
+            </tr>
+
+            <tr>
+              <td>Financial Health</td>
+              <td>{financialHealth}%</td>
             </tr>
           </tbody>
         </table>

@@ -2,83 +2,117 @@ import { useEffect, useState } from "react";
 import {
   createGoal,
   getGoals,
-  updateGoal,
+  updateSavings,
   deleteGoal,
 } from "../services/goalService";
+
+import GoalForm from "../components/GoalForm";
+import GoalTable from "../components/GoalTable";
+import GoalSummaryCards from "../components/GoalSummaryCards";
+
 import "../styles/Goal.css";
 
 function Goal() {
-  const [title, setTitle] = useState("");
-  const [targetAmount, setTargetAmount] = useState("");
-  const [savedAmount, setSavedAmount] = useState("");
-  const [deadline, setDeadline] = useState("");
+  const [formData, setFormData] = useState({
+    title: "",
+    targetAmount: "",
+    savedAmount: "",
+    deadline: "",
+    note: "",
+  });
 
   const [goalList, setGoalList] = useState([]);
+  const [filteredGoals, setFilteredGoals] = useState([]);
+
+  const [search, setSearch] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [loading, setLoading] = useState(true);
+
   const [updateValues, setUpdateValues] = useState({});
 
   useEffect(() => {
-    fetchGoals();
+    loadGoals();
   }, []);
 
-  const fetchGoals = async () => {
+  useEffect(() => {
+    const filtered = goalList.filter((goal) =>
+      goal.title.toLowerCase().includes(search.toLowerCase()),
+    );
+
+    setFilteredGoals(filtered);
+  }, [search, goalList]);
+
+  const loadGoals = async () => {
     try {
-      const data = await getGoals();
-      setGoalList(data.goals);
+      setLoading(true);
+
+      const response = await getGoals();
+
+      setGoalList(response.goals || []);
     } catch (error) {
-      console.log(error);
-      alert("Failed to load goals.");
+      console.error(error);
+      alert("Unable to load goals.");
+    } finally {
+      setLoading(false);
     }
   };
 
   const resetForm = () => {
-    setTitle("");
-    setTargetAmount("");
-    setSavedAmount("");
-    setDeadline("");
+    setFormData({
+      title: "",
+      targetAmount: "",
+      savedAmount: "",
+      deadline: "",
+      note: "",
+    });
+  };
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      await createGoal({
-        title,
-        targetAmount,
-        savedAmount,
-        deadline,
-      });
+      setSaving(true);
 
-      alert("Goal Created Successfully");
+      await createGoal(formData);
 
       resetForm();
-      fetchGoals();
+      loadGoals();
+
+      alert("Goal created successfully.");
     } catch (error) {
-      console.log(error);
+      console.error(error);
       alert(error.response?.data?.message || "Unable to create goal.");
+    } finally {
+      setSaving(false);
     }
   };
 
-  const handleUpdate = async (goal) => {
-    const newAmount = Number(updateValues[goal._id]);
-
-    if (isNaN(newAmount)) {
-      alert("Enter a valid amount.");
-      return;
-    }
-
+  const handleUpdateSavings = async (goalId) => {
     try {
-      await updateGoal(goal._id, newAmount);
+      const amount = Number(updateValues[goalId]);
 
-      alert("Savings Updated Successfully");
+      if (Number.isNaN(amount)) {
+        alert("Please enter a valid amount.");
+        return;
+      }
 
-      setUpdateValues({
-        ...updateValues,
-        [goal._id]: "",
-      });
+      await updateSavings(goalId, amount);
 
-      fetchGoals();
+      setUpdateValues((prev) => ({
+        ...prev,
+        [goalId]: "",
+      }));
+
+      loadGoals();
     } catch (error) {
-      console.log(error);
+      console.error(error);
       alert("Unable to update savings.");
     }
   };
@@ -88,135 +122,43 @@ function Goal() {
 
     try {
       await deleteGoal(id);
-
-      alert("Goal Deleted Successfully");
-
-      fetchGoals();
+      loadGoals();
     } catch (error) {
-      console.log(error);
+      console.error(error);
       alert("Unable to delete goal.");
     }
   };
 
+  if (loading) {
+    return (
+      <div className="goal-page">
+        <h2>Loading goals...</h2>
+      </div>
+    );
+  }
+
   return (
     <div className="goal-page">
-      <h1>🎯 Savings Goal Tracker</h1>
+      <h1>Savings Goal Tracker</h1>
 
-      <div className="goal-card">
-        <h2>Create New Goal</h2>
+      <GoalSummaryCards goalList={goalList} />
 
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="Goal Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
+      <GoalForm
+        formData={formData}
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
+        saving={saving}
+      />
 
-          <input
-            type="number"
-            placeholder="Target Amount"
-            value={targetAmount}
-            onChange={(e) => setTargetAmount(e.target.value)}
-            required
-          />
-
-          <input
-            type="number"
-            placeholder="Saved Amount"
-            value={savedAmount}
-            onChange={(e) => setSavedAmount(e.target.value)}
-          />
-
-          <input
-            type="date"
-            value={deadline}
-            onChange={(e) => setDeadline(e.target.value)}
-          />
-
-          <button type="submit">🎯 Create Goal</button>
-        </form>
-      </div>
-
-      <div className="goal-list">
-        <h2>My Goals</h2>
-
-        {goalList.length === 0 ? (
-          <p>No Goals Added Yet.</p>
-        ) : (
-          goalList.map((goal) => {
-            const progress = Math.min(
-              ((goal.savedAmount / goal.targetAmount) * 100).toFixed(1),
-              100,
-            );
-
-            const completed = goal.savedAmount >= goal.targetAmount;
-
-            return (
-              <div className="goal-item" key={goal._id}>
-                <h3>{goal.title}</h3>
-
-                {completed && (
-                  <span className="goal-badge">🏆 Goal Achieved</span>
-                )}
-
-                <p>
-                  <strong>Target:</strong> ₹{goal.targetAmount}
-                </p>
-
-                <p>
-                  <strong>Saved:</strong> ₹{goal.savedAmount}
-                </p>
-
-                <p>
-                  <strong>Deadline:</strong>{" "}
-                  {goal.deadline
-                    ? new Date(goal.deadline).toLocaleDateString()
-                    : "-"}
-                </p>
-
-                <div className="progress-bar">
-                  <div
-                    className="progress"
-                    style={{
-                      width: `${progress}%`,
-                    }}
-                  ></div>
-                </div>
-
-                <p>{progress}% Completed</p>
-
-                <input
-                  type="number"
-                  placeholder="Enter new saved amount"
-                  value={updateValues[goal._id] || ""}
-                  onChange={(e) =>
-                    setUpdateValues({
-                      ...updateValues,
-                      [goal._id]: e.target.value,
-                    })
-                  }
-                />
-
-                <button
-                  className="update-btn"
-                  onClick={() => handleUpdate(goal)}
-                >
-                  💰 Update Savings
-                </button>
-
-                <button
-                  className="delete-btn"
-                  onClick={() => handleDelete(goal._id)}
-                >
-                  🗑 Delete
-                </button>
-              </div>
-            );
-          })
-        )}
-      </div>
+      <GoalTable
+        goalList={filteredGoals}
+        search={search}
+        setSearch={setSearch}
+        updateValues={updateValues}
+        setUpdateValues={setUpdateValues}
+        handleUpdateSavings={handleUpdateSavings}
+        handleDelete={handleDelete}
+      />
     </div>
   );
 }

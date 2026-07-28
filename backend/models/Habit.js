@@ -6,18 +6,21 @@ const habitSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
+      index: true,
     },
 
     title: {
       type: String,
       required: true,
       trim: true,
+      maxlength: 100,
     },
 
     frequency: {
       type: String,
       enum: ["Daily", "Weekly", "Monthly"],
       required: true,
+      default: "Daily",
     },
 
     completed: {
@@ -28,6 +31,7 @@ const habitSchema = new mongoose.Schema(
     streak: {
       type: Number,
       default: 0,
+      min: 0,
     },
 
     completedDates: [
@@ -53,7 +57,16 @@ const habitSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    versionKey: false,
   },
 );
+
+// Total number of completions
+habitSchema.virtual("totalCompleted").get(function () {
+  return this.completedDates.length;
+});
+
+habitSchema.set("toJSON", { virtuals: true });
+habitSchema.set("toObject", { virtuals: true });
 
 module.exports = mongoose.model("Habit", habitSchema);

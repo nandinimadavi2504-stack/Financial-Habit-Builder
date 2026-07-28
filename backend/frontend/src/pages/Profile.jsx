@@ -14,6 +14,8 @@ function Profile() {
     address: "",
   });
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     loadProfile();
   }, []);
@@ -22,39 +24,49 @@ function Profile() {
     try {
       const data = await getProfile();
 
+      const profile = data.profile;
+
       setFormData({
-        fullName: data.fullName || "",
-        email: data.email || "",
-        phone: data.phone || "",
-        occupation: data.occupation || "",
-        monthlyIncome: data.monthlyIncome || 0,
-        savingTarget: data.savingTarget || 0,
-        investmentType: data.investmentType || "Savings",
-        address: data.address || "",
+        fullName: profile.fullName || "",
+        email: profile.email || "",
+        phone: profile.phone || "",
+        occupation: profile.occupation || "",
+        monthlyIncome: profile.monthlyIncome || 0,
+        savingTarget: profile.savingTarget || 0,
+        investmentType: profile.investmentType || "Savings",
+        address: profile.address || "",
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [e.target.name]: e.target.value,
-    });
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      await updateProfile(formData);
-      alert("Profile updated successfully!");
+      const response = await updateProfile(formData);
+
+      alert(response.message);
     } catch (error) {
-      console.log(error);
+      console.error(error);
+
       alert(error.response?.data?.message || "Error updating profile");
     }
   };
+
+  if (loading) {
+    return <h2 className="loading">Loading Profile...</h2>;
+  }
 
   return (
     <div className="profile-page">
@@ -125,8 +137,8 @@ function Profile() {
 
           <textarea
             name="address"
-            placeholder="Address"
             rows="4"
+            placeholder="Address"
             value={formData.address}
             onChange={handleChange}
           />

@@ -1,10 +1,21 @@
-import api, { getAuthHeader } from "./api";
+import api from "./api";
 
 // ==============================
 // Get All Investments
 // ==============================
-export const getInvestments = async () => {
-  const response = await api.get("/investments", getAuthHeader());
+export const getInvestments = async (params = {}) => {
+  const response = await api.get("/investments", {
+    params,
+  });
+
+  return response.data;
+};
+
+// ==============================
+// Get Investment By ID
+// ==============================
+export const getInvestmentById = async (id) => {
+  const response = await api.get(`/investments/${id}`);
 
   return response.data;
 };
@@ -13,11 +24,7 @@ export const getInvestments = async () => {
 // Add Investment
 // ==============================
 export const addInvestment = async (investmentData) => {
-  const response = await api.post(
-    "/investments",
-    investmentData,
-    getAuthHeader(),
-  );
+  const response = await api.post("/investments", investmentData);
 
   return response.data;
 };
@@ -26,11 +33,7 @@ export const addInvestment = async (investmentData) => {
 // Update Investment
 // ==============================
 export const updateInvestment = async (id, investmentData) => {
-  const response = await api.put(
-    `/investments/${id}`,
-    investmentData,
-    getAuthHeader(),
-  );
+  const response = await api.put(`/investments/${id}`, investmentData);
 
   return response.data;
 };
@@ -39,7 +42,7 @@ export const updateInvestment = async (id, investmentData) => {
 // Delete Investment
 // ==============================
 export const deleteInvestment = async (id) => {
-  const response = await api.delete(`/investments/${id}`, getAuthHeader());
+  const response = await api.delete(`/investments/${id}`);
 
   return response.data;
 };

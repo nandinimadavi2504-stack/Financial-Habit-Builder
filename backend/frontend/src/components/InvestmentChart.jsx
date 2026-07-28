@@ -1,4 +1,3 @@
-import React from "react";
 import {
   ResponsiveContainer,
   LineChart,
@@ -12,28 +11,16 @@ import {
 
 function InvestmentChart({ investments }) {
   const data = investments.map((item) => ({
-    name: item.name || item.investmentName || "Investment",
-    amount: Number(item.amount),
+    name: item.investmentName || "Investment",
+    invested: Number(item.amountInvested || 0),
+    current: Number(item.currentValue || 0),
   }));
 
+  if (!data.length) return null;
+
   return (
-    <div
-      style={{
-        background: "#ffffff",
-        padding: "20px",
-        marginTop: "30px",
-        borderRadius: "12px",
-        boxShadow: "0 4px 10px rgba(0,0,0,0.08)",
-      }}
-    >
-      <h2
-        style={{
-          textAlign: "center",
-          marginBottom: "20px",
-        }}
-      >
-        Investment Growth
-      </h2>
+    <div className="chart-card">
+      <h2 className="chart-title">Investment Performance</h2>
 
       <ResponsiveContainer width="100%" height={350}>
         <LineChart data={data}>
@@ -49,8 +36,17 @@ function InvestmentChart({ investments }) {
 
           <Line
             type="monotone"
-            dataKey="amount"
+            dataKey="invested"
+            name="Amount Invested"
             stroke="#2563eb"
+            strokeWidth={3}
+          />
+
+          <Line
+            type="monotone"
+            dataKey="current"
+            name="Current Value"
+            stroke="#16a34a"
             strokeWidth={3}
           />
         </LineChart>

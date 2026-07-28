@@ -1,3 +1,7 @@
+/* ======================================
+   Global
+====================================== */
+
 body {
   margin: 0;
   background: #f4f7fc;
@@ -9,37 +13,74 @@ body {
   padding: 30px;
 }
 
+/* ======================================
+   Loading
+====================================== */
+
+.loading {
+  text-align: center;
+  margin-top: 100px;
+  font-size: 26px;
+  font-weight: 600;
+  color: #555;
+}
+
+/* ======================================
+   Header
+====================================== */
+
 .dashboard-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 35px;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
 .dashboard-header h1 {
   color: #1d4ed8;
   margin: 0;
+  font-size: 32px;
 }
 
-.dashboard-header h3 {
-  color: #555;
+.dashboard-header h2 {
+  margin: 12px 0 8px;
+  color: #222;
+}
+
+.dashboard-subtitle {
+  margin: 0;
+  color: #666;
+  font-size: 16px;
+}
+
+.dashboard-date {
   margin-top: 10px;
+  color: #888;
+  font-size: 14px;
 }
 
 .logout-btn {
   background: #ef4444;
-  color: white;
+  color: #fff;
   border: none;
-  padding: 12px 20px;
+  padding: 12px 22px;
   border-radius: 8px;
   cursor: pointer;
   font-size: 15px;
-  transition: 0.3s;
+  font-weight: 600;
+  transition: all 0.3s ease;
 }
 
 .logout-btn:hover {
   background: #dc2626;
+  transform: translateY(-2px);
 }
+
+/* ======================================
+   Dashboard Cards
+====================================== */
 
 .card-container {
   display: grid;
@@ -49,30 +90,97 @@ body {
 }
 
 .dashboard-card {
-  background: white;
+  background: #fff;
   padding: 25px;
   border-radius: 15px;
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
-  transition: 0.3s;
+  transition: all 0.3s ease;
 }
 
 .dashboard-card:hover {
-  transform: translateY(-6px);
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
 }
 
 .dashboard-card h4 {
   margin: 0;
   color: #666;
+  font-size: 15px;
 }
 
 .dashboard-card h2 {
   margin-top: 15px;
+  color: #1d4ed8;
+  font-size: 28px;
 }
 
+/* ======================================
+   Financial Health
+====================================== */
+
+.health-card {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: white;
+  border-radius: 15px;
+  padding: 30px;
+  text-align: center;
+  margin-bottom: 35px;
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.25);
+}
+
+.health-card h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.health-card h1 {
+  margin: 15px 0;
+  font-size: 48px;
+}
+
+.health-card p {
+  margin: 0;
+  font-size: 18px;
+  opacity: 0.95;
+}
+/* ======================================
+   Charts
+====================================== */
+
+.chart-section {
+  background: #fff;
+  border-radius: 15px;
+  padding: 25px;
+  margin-bottom: 30px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+}
+
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+/* ======================================
+   Progress Cards
+====================================== */
+
+.progress-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+/* ======================================
+   Quick Actions
+====================================== */
+
 .actions {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
   gap: 15px;
-  flex-wrap: wrap;
   margin-bottom: 35px;
 }
 
@@ -80,18 +188,29 @@ body {
   background: #2563eb;
   color: white;
   border: none;
-  padding: 13px 22px;
-  border-radius: 8px;
+  border-radius: 10px;
+  padding: 14px;
   cursor: pointer;
-  transition: 0.3s;
+  font-size: 15px;
+  font-weight: 600;
+  transition: all 0.3s ease;
 }
 
 .action-btn:hover {
   background: #1d4ed8;
+  transform: translateY(-3px);
 }
 
+.action-btn:active {
+  transform: scale(0.98);
+}
+
+/* ======================================
+   Financial Summary
+====================================== */
+
 .transactions {
-  background: white;
+  background: #fff;
   border-radius: 15px;
   padding: 25px;
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
@@ -99,4 +218,90 @@ body {
 
 .transactions h2 {
   margin-top: 0;
+  color: #1d4ed8;
+  margin-bottom: 20px;
+}
+
+.transactions table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.transactions th {
+  background: #2563eb;
+  color: white;
+  padding: 14px;
+  text-align: left;
+}
+
+.transactions td {
+  padding: 14px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.transactions tr:nth-child(even) {
+  background: #f8fafc;
+}
+
+.transactions tr:hover {
+  background: #eef4ff;
+}
+
+/* ======================================
+   Responsive
+====================================== */
+
+@media (max-width: 992px) {
+  .chart-grid,
+  .progress-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .dashboard-header h1 {
+    font-size: 26px;
+  }
+
+  .dashboard-header h2 {
+    font-size: 22px;
+  }
+
+  .logout-btn {
+    width: 100%;
+  }
+
+  .actions {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-grid,
+  .progress-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .transactions {
+    overflow-x: auto;
+  }
+
+  .transactions table {
+    min-width: 500px;
+  }
+
+  .health-card h1 {
+    font-size: 36px;
+  }
+
+  .dashboard-card h2 {
+    font-size: 24px;
+  }
 }

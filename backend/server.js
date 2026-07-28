@@ -39,14 +39,8 @@ const analyticsRoutes = require("./routes/analyticsRoutes");
 const habitRoutes = require("./routes/habitRoutes");
 const profileRoutes = require("./routes/profileRoutes");
 const investmentRoutes = require("./routes/investmentRoutes");
-
-// Admin Routes
 const adminRoutes = require("./routes/adminRoutes");
-
-// Feedback Routes
 const feedbackRoutes = require("./routes/feedbackRoutes");
-
-// Monthly Report Routes (NEW)
 const reportRoutes = require("./routes/reportRoutes");
 
 // ===========================
@@ -80,7 +74,7 @@ app.use("/api/habits", habitRoutes);
 // Profile
 app.use("/api/profile", profileRoutes);
 
-// Wealth Growth / Investments
+// Investments
 app.use("/api/investments", investmentRoutes);
 
 // Admin
@@ -89,7 +83,7 @@ app.use("/api/admin", adminRoutes);
 // Feedback
 app.use("/api/feedback", feedbackRoutes);
 
-// Monthly Financial Report (NEW)
+// Monthly Report
 app.use("/api/report", reportRoutes);
 
 // ===========================

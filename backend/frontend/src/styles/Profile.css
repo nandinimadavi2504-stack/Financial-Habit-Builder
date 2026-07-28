@@ -1,21 +1,52 @@
+/* ======================================
+   Profile Page
+====================================== */
+
 .profile-page {
-  max-width: 800px;
+  max-width: 900px;
   margin: 40px auto;
   padding: 20px;
 }
 
+/* ======================================
+   Loading
+====================================== */
+
+.loading {
+  text-align: center;
+  margin-top: 80px;
+  font-size: 22px;
+  font-weight: 600;
+  color: #555;
+}
+
+/* ======================================
+   Profile Card
+====================================== */
+
 .profile-card {
   background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
   padding: 35px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  transition: 0.3s ease;
+}
+
+.profile-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
 }
 
 .profile-card h1 {
   text-align: center;
   color: #2563eb;
   margin-bottom: 30px;
+  font-size: 30px;
 }
+
+/* ======================================
+   Form
+====================================== */
 
 .profile-card form {
   display: flex;
@@ -23,56 +54,89 @@
   gap: 18px;
 }
 
+/* ======================================
+   Inputs
+====================================== */
+
 .profile-card input,
 .profile-card select,
 .profile-card textarea {
   width: 100%;
-  padding: 12px;
+  padding: 13px;
   border: 1px solid #d1d5db;
   border-radius: 8px;
   font-size: 15px;
   outline: none;
-  transition: 0.3s;
+  transition: all 0.3s ease;
   box-sizing: border-box;
+  background: #fff;
 }
 
 .profile-card input:focus,
 .profile-card select:focus,
 .profile-card textarea:focus {
   border-color: #2563eb;
-  box-shadow: 0 0 5px rgba(37, 99, 235, 0.2);
+  box-shadow: 0 0 8px rgba(37, 99, 235, 0.2);
 }
 
 .profile-card textarea {
   resize: vertical;
-  min-height: 100px;
+  min-height: 110px;
 }
+
+/* ======================================
+   Button
+====================================== */
 
 .profile-card button {
   background: #2563eb;
-  color: white;
+  color: #fff;
   border: none;
   padding: 14px;
   border-radius: 8px;
   font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
-  transition: 0.3s;
+  transition: all 0.3s ease;
 }
 
 .profile-card button:hover {
   background: #1d4ed8;
+  transform: translateY(-2px);
 }
+
+.profile-card button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ======================================
+   Responsive
+====================================== */
 
 @media (max-width: 768px) {
   .profile-page {
+    margin: 20px auto;
     padding: 15px;
   }
 
   .profile-card {
-    padding: 20px;
+    padding: 25px;
   }
 
   .profile-card h1 {
     font-size: 24px;
+  }
+
+  .profile-card input,
+  .profile-card select,
+  .profile-card textarea {
+    font-size: 14px;
+    padding: 12px;
+  }
+
+  .profile-card button {
+    font-size: 15px;
   }
 }

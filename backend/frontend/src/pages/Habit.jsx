@@ -1,210 +1,273 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   getHabits,
   createHabit,
+  updateHabit,
   completeHabit,
   resetHabit,
   deleteHabit,
 } from "../services/habitService";
+
+import HabitForm from "../components/HabitForm";
+import HabitSummaryCards from "../components/HabitSummaryCards";
+import HabitTable from "../components/HabitTable";
+import HabitChart from "../components/HabitChart";
+
 import "../styles/Habit.css";
 
 function Habit() {
   const [habits, setHabits] = useState([]);
+  const [filteredHabits, setFilteredHabits] = useState([]);
 
-  const [title, setTitle] = useState("");
-  const [frequency, setFrequency] = useState("Daily");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const [reminderEnabled, setReminderEnabled] = useState(false);
-  const [reminderTime, setReminderTime] = useState("");
+  const [search, setSearch] = useState("");
+  const [frequencyFilter, setFrequencyFilter] = useState("All");
+
+  const [editingHabit, setEditingHabit] = useState(null);
+
+  // ===============================
+  // Load Habits
+  // ===============================
+  const loadHabits = async () => {
+    try {
+      setLoading(true);
+
+      const data = await getHabits();
+
+      const list = data.habits || [];
+
+      setHabits(list);
+      setFilteredHabits(list);
+
+      setError("");
+    } catch (err) {
+      console.error(err);
+      setError("Unable to load habits.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     loadHabits();
   }, []);
 
-  const loadHabits = async () => {
-    try {
-      const data = await getHabits();
-      setHabits(data.habits);
-    } catch (error) {
-      console.log(error);
+  // ===============================
+  // Search + Filter
+  // ===============================
+  useEffect(() => {
+    let temp = [...habits];
+
+    if (search.trim()) {
+      temp = temp.filter((habit) =>
+        habit.title.toLowerCase().includes(search.toLowerCase()),
+      );
     }
-  };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    if (frequencyFilter !== "All") {
+      temp = temp.filter((habit) => habit.frequency === frequencyFilter);
+    }
 
+    setFilteredHabits(temp);
+  }, [search, frequencyFilter, habits]);
+
+  // ===============================
+  // Summary
+  // ===============================
+  const summary = useMemo(() => {
+    const total = habits.length;
+
+    const completed = habits.filter((habit) => habit.completed).length;
+
+    const pending = total - completed;
+
+    const longestStreak =
+      habits.length > 0 ? Math.max(...habits.map((h) => h.streak || 0)) : 0;
+
+    return {
+      total,
+      completed,
+      pending,
+      longestStreak,
+    };
+  }, [habits]);
+
+  // ===============================
+  // Add / Update Habit
+  // ===============================
+  const handleSubmit = async (habitData) => {
     try {
-      await createHabit({
-        title,
-        frequency,
-        reminderEnabled,
-        reminderTime,
-      });
+      if (editingHabit) {
+        await updateHabit(editingHabit._id, habitData);
+        alert("Habit updated successfully.");
+      } else {
+        await createHabit(habitData);
+        alert("Habit created successfully.");
+      }
 
-      setTitle("");
-      setFrequency("Daily");
-      setReminderEnabled(false);
-      setReminderTime("");
-
+      setEditingHabit(null);
       loadHabits();
+    } catch (err) {
+      console.error(err);
 
-      alert("Habit created successfully!");
-    } catch (error) {
-      console.log(error);
-      alert(error.response?.data?.message || "Unable to create habit.");
+      alert(err.response?.data?.message || "Unable to save habit.");
     }
   };
 
+  // ===============================
+  // Edit Habit
+  // ===============================
+  const handleEdit = (habit) => {
+    setEditingHabit(habit);
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  // ===============================
+  // Complete Habit
+  // ===============================
   const handleComplete = async (id) => {
     try {
       await completeHabit(id);
       loadHabits();
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.error(err);
+
+      alert(err.response?.data?.message || "Unable to complete habit.");
     }
   };
 
+  // ===============================
+  // Reset Habit
+  // ===============================
   const handleReset = async (id) => {
     try {
       await resetHabit(id);
       loadHabits();
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.error(err);
+
+      alert(err.response?.data?.message || "Unable to reset habit.");
     }
   };
 
+  // ===============================
+  // Delete Habit
+  // ===============================
   const handleDelete = async (id) => {
-    if (!window.confirm("Delete this habit?")) return;
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this habit?",
+    );
+
+    if (!confirmDelete) return;
 
     try {
       await deleteHabit(id);
       loadHabits();
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.error(err);
+
+      alert(err.response?.data?.message || "Unable to delete habit.");
     }
   };
 
+  // ===============================
+  // Loading State
+  // ===============================
+  if (loading) {
+    return (
+      <div className="habit-page">
+        <div className="loading">
+          <h2>Loading habits...</h2>
+        </div>
+      </div>
+    );
+  }
+
+  // ===============================
+  // Error State
+  // ===============================
+  if (error) {
+    return (
+      <div className="habit-page">
+        <div className="error-box">
+          <h2>{error}</h2>
+
+          <button className="primary-btn" onClick={loadHabits}>
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // ===============================
+  // UI
+  // ===============================
   return (
     <div className="habit-page">
-      <h1>Financial Habit Tracker</h1>
+      <div className="habit-header">
+        <h1>Financial Habit Tracker</h1>
 
-      <div className="habit-card">
-        <h2>Add New Habit</h2>
-
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="Habit Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
-
-          <select
-            value={frequency}
-            onChange={(e) => setFrequency(e.target.value)}
-          >
-            <option>Daily</option>
-            <option>Weekly</option>
-            <option>Monthly</option>
-          </select>
-
-          <div
-            style={{
-              marginTop: "15px",
-              marginBottom: "10px",
-            }}
-          >
-            <label>
-              <input
-                type="checkbox"
-                checked={reminderEnabled}
-                onChange={(e) => setReminderEnabled(e.target.checked)}
-              />
-              Enable Reminder
-            </label>
-          </div>
-
-          {reminderEnabled && (
-            <input
-              type="time"
-              value={reminderTime}
-              onChange={(e) => setReminderTime(e.target.value)}
-            />
-          )}
-
-          <button type="submit">Add Habit</button>
-        </form>
+        <p>
+          Build strong financial habits and improve your consistency every day.
+        </p>
       </div>
 
-      <div className="habit-list">
-        {habits.length === 0 ? (
-          <p>No habits added yet.</p>
-        ) : (
-          habits.map((habit) => {
-            const progress = Math.min(habit.streak * 10, 100);
+      <HabitSummaryCards
+        total={summary.total}
+        completed={summary.completed}
+        pending={summary.pending}
+        longestStreak={summary.longestStreak}
+      />
 
-            return (
-              <div className="habit-item" key={habit._id}>
-                <h3>{habit.title}</h3>
+      <HabitForm
+        onSubmit={handleSubmit}
+        editingHabit={editingHabit}
+        cancelEdit={() => setEditingHabit(null)}
+      />
 
-                <p>
-                  <strong>Frequency:</strong> {habit.frequency}
-                </p>
+      <HabitChart habits={filteredHabits} />
 
-                {habit.reminderEnabled && (
-                  <p>
-                    <strong>Reminder:</strong> {habit.reminderTime}
-                  </p>
-                )}
+      <div className="habit-toolbar">
+        <input
+          type="text"
+          placeholder="Search habits..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
 
-                <p>
-                  <strong>Status:</strong>{" "}
-                  {habit.completed ? "Completed" : "Pending"}
-                </p>
-
-                <p>
-                  <strong>Streak:</strong> {habit.streak} day(s)
-                </p>
-
-                <div className="progress-bar">
-                  <div
-                    className="progress"
-                    style={{
-                      width: `${progress}%`,
-                    }}
-                  ></div>
-                </div>
-
-                {habit.streak >= 7 && (
-                  <div className="habit-badge">Great Consistency!</div>
-                )}
-
-                <button
-                  className="complete-btn"
-                  onClick={() => handleComplete(habit._id)}
-                >
-                  Complete
-                </button>
-
-                <button
-                  className="reset-btn"
-                  onClick={() => handleReset(habit._id)}
-                >
-                  Reset
-                </button>
-
-                <button
-                  className="delete-btn"
-                  onClick={() => handleDelete(habit._id)}
-                >
-                  Delete
-                </button>
-              </div>
-            );
-          })
-        )}
+        <select
+          value={frequencyFilter}
+          onChange={(e) => setFrequencyFilter(e.target.value)}
+        >
+          <option value="All">All Frequencies</option>
+          <option value="Daily">Daily</option>
+          <option value="Weekly">Weekly</option>
+          <option value="Monthly">Monthly</option>
+        </select>
       </div>
+
+      {filteredHabits.length === 0 ? (
+        <div className="empty-state">
+          <h2>No Habits Found</h2>
+
+          <p>Start building better financial habits today.</p>
+        </div>
+      ) : (
+        <HabitTable
+          habits={filteredHabits}
+          onEdit={handleEdit}
+          onComplete={handleComplete}
+          onReset={handleReset}
+          onDelete={handleDelete}
+        />
+      )}
     </div>
   );
 }

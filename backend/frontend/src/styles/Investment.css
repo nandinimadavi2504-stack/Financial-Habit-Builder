@@ -202,3 +202,95 @@
     white-space: nowrap;
   }
 }
+/* ============================
+   Form Card
+============================ */
+
+.investment-form-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 30px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+}
+
+.investment-form-card h2 {
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+/* ============================
+   Textarea
+============================ */
+
+.investment-form textarea {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+  resize: vertical;
+  min-height: 90px;
+  font-size: 15px;
+  font-family: inherit;
+}
+
+.investment-form textarea:focus {
+  border-color: #3498db;
+}
+
+/* ============================
+   Empty State
+============================ */
+
+.no-data {
+  text-align: center;
+  padding: 30px;
+  color: #777;
+  font-size: 16px;
+}
+
+/* ============================
+   ROI Badge
+============================ */
+
+.roi-positive {
+  color: #27ae60;
+  font-weight: 600;
+}
+
+.roi-negative {
+  color: #e74c3c;
+  font-weight: 600;
+}
+
+/* ============================
+   Table Header
+============================ */
+
+.investment-table th {
+  white-space: nowrap;
+}
+
+/* ============================
+   Action Buttons
+============================ */
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+.chart-card {
+  background: #fff;
+  padding: 20px;
+  margin-top: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.chart-title {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #2c3e50;
+  font-size: 22px;
+}

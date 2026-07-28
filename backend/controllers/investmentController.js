@@ -53,6 +53,36 @@ exports.getInvestments = async (req, res) => {
 };
 
 // ===========================
+// Get Investment By ID
+// ===========================
+exports.getInvestmentById = async (req, res) => {
+  try {
+    const investment = await Investment.findOne({
+      _id: req.params.id,
+      user: req.user.id,
+    });
+
+    if (!investment) {
+      return res.status(404).json({
+        success: false,
+        message: "Investment not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      investment,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+// ===========================
 // Update Investment
 // ===========================
 exports.updateInvestment = async (req, res) => {
@@ -69,7 +99,13 @@ exports.updateInvestment = async (req, res) => {
       });
     }
 
-    Object.assign(investment, req.body);
+    investment.investmentType =
+      req.body.investmentType ?? investment.investmentType;
+    investment.amountInvested =
+      req.body.amountInvested ?? investment.amountInvested;
+    investment.currentValue = req.body.currentValue ?? investment.currentValue;
+    investment.investmentDate =
+      req.body.investmentDate ?? investment.investmentDate;
 
     await investment.save();
 
